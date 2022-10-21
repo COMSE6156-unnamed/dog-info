@@ -1,0 +1,33 @@
+{
+  "name": "dog-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COMSE6156-unnamed/dog-info.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/COMSE6156-unnamed/dog-info/issues"
+  },
+  "homepage": "https://github.com/COMSE6156-unnamed/dog-info#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1237.0",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "http-errors": "^2.0.0",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.25.3"
+  }
+}
