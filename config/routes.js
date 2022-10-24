@@ -1,10 +1,11 @@
 const initRouter = require("../routes/init");
+const dogRouter = require("../routes/dogs");
 const createError = require("http-errors");
 
 module.exports = function (app) {
     
   app.use("/", initRouter);
-
+  app.use("/dogs", dogRouter);
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
     next(createError(404));
