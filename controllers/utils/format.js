@@ -31,11 +31,26 @@ const categoriesFormat = (categories) => {
     })
 }
 
+const originFormat = (origin) => {
+    return {
+        id: origin.id,
+        name: origin.name
+    }
+};
+
+const originsFormat = (origins) => {
+    return origins.map((origin) => {
+        return originFormat(origin);
+    })
+}
+
 const func = {
     dogFormat,
     dogsFormat,
     categoryFormat,
-    categoriesFormat
+    categoriesFormat,
+    originFormat,
+    originsFormat
 }
 
 module.exports = func;

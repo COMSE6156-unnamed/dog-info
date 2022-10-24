@@ -4,6 +4,7 @@ const sequelize = require("../util/database");
 const errorCheck = require("./utils/errors");
 const format = require("./utils/format");
 const { Categories } = require("../models/models");
+
 const getCategory = async (req, res) => {
     try {
         const id = req.params.id;
@@ -14,7 +15,7 @@ const getCategory = async (req, res) => {
         if (categories.length < 1) {
             throw new Error("CATEGORY_NOT_EXIST");
         }
-        let category = categories.at(0);
+        const category = categories.at(0);
         return res.status(200).json(format.categoryFormat(category));
     } catch (error) {
         console.log(error);
