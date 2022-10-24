@@ -18,9 +18,24 @@ const dogsFormat = (dogs, categoryMap, originMap) => {
     });
 };
 
+const categoryFormat = (category) => {
+    return {
+        id: category.id,
+        name: category.name
+    };
+};
+
+const categoriesFormat = (categories) => {
+    return categories.map((category) => {
+        return categoryFormat(category); 
+    })
+}
+
 const func = {
     dogFormat,
-    dogsFormat
+    dogsFormat,
+    categoryFormat,
+    categoriesFormat
 }
 
 module.exports = func;

@@ -1,7 +1,9 @@
 const validator = require("validator");
 const errors = new Map([
     ["DOG_NOT_EXIST", "Dog does not exist"],
-    ["LOAD_DOGS_ERROR", "Error loading info of all dogs"]
+    ["LOAD_DOGS_ERROR", "Error loading info of all dogs"],
+    ["CATEGORY_NOT_EXIST", "Category does not exist"],
+    ["LOAD_CATEGORIES_ERROR", "Error loading list of all categories"]
 ])
 
 const errorHandler = (err, res) => {

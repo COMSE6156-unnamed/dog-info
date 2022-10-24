@@ -1,10 +1,4 @@
 const Sequelize = require("sequelize");
-const {
-    Dogs,
-    Categories,
-    Origins,
-    Sizes
-} = require ('../models/models');
 const sql = require("./sql/dogs");
 const sequelize = require("../util/database");
 const format = require("./utils/format");
@@ -18,6 +12,7 @@ const getAllDogsInfo = async (req, res) => {
             { type: Sequelize.QueryTypes.SELECT });
         const origins = await sequelize.query(sql.getDogsOrigins,
             { type: Sequelize.QueryTypes.SELECT });
+        
         const categoryMap = new Map();
         if (!dogs || !categories || !origins) {
             throw new Error("LOAD_DOGS_ERROR");
@@ -36,7 +31,7 @@ const getAllDogsInfo = async (req, res) => {
             }
             originMap.get(origin.did).push({id: origin.oid, name: origin.oname});
         });
-        console.log('dogs', dogs);
+
         dogs = format.dogsFormat(dogs, categoryMap, originMap);
         return res.status(200).json(dogs);
     } catch (error) {
@@ -58,7 +53,7 @@ const getDog = async (req, res) => {
         if (dogs.length < 1) {
             throw new Error("DOG_NOT_EXIST");
         }
-        // TODO: Error check if there is no such dog
+        
         let dog = dogs.at(0);
         const categories = await sequelize.query(sql.getDogCategories, {
             replacements: { id: id },
