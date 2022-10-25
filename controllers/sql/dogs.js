@@ -42,13 +42,21 @@ WHERE dogs.id = dogFromOrigins.did AND
     origins.id = dogFromOrigins.oid;
 `
 
+const getDogSize = `
+SELECT sizes.id, sizes.name
+FROM dogs, sizes, dogHasSizes
+WHERE dogs.id = :id AND
+    dogs.id = dogHasSizes.did AND sizes.id = dogHasSizes.sid;
+`
+
 const sql = {
     getDog,
     getDogs,
     getDogCategories,
     getDogsCategories,
     getDogOrigins,
-    getDogsOrigins
+    getDogsOrigins,
+    getDogSize,
 };
 
 module.exports = sql;

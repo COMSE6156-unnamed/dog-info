@@ -49,7 +49,7 @@ const getDog = async (req, res) => {
             },
             type: Sequelize.QueryTypes.SELECT
         });
-        console.log("dogs", dogs);
+        
         if (dogs.length < 1) {
             throw new Error("DOG_NOT_EXIST");
         }
@@ -73,9 +73,65 @@ const getDog = async (req, res) => {
     }
 };
 
+const getDogCategories = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const categories = await sequelize.query(sql.getDogCategories, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        });
+        if (categories.length < 1) {
+            throw new Error("DOG_NOT_EXIST");
+        }
+
+        return res.status(200).json(format.categoriesFormat(categories));
+    } catch (error) {
+        console.log(error);
+        return errorCheck.errorHandler(error, res);
+    }
+}
+
+const getDogOrigins = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const origins = await sequelize.query(sql.getDogOrigins, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        });
+        if (origins.length < 1) {
+            throw new Error("DOG_NOT_EXIST");
+        }
+        return res.status(200).json(format.originsFormat(origins));
+    } catch (error) {
+        console.log(error);
+        return errorCheck.errorHandler(error, res);
+    }
+};
+
+const getDogSize = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const sizes = await sequelize.query(sql.getDogSize, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        });
+        if (sizes.length < 1) {
+            throw new Error("DOG_NOT_EXIST");
+        }
+        const size = sizes.at(0);
+        return res.status(200).json(size);
+    } catch (error) {
+        console.log(error);
+        return errorCheck.errorHandler(error, res);
+    }
+}
+
 const func = {
     getAllDogsInfo,
-    getDog
+    getDog,
+    getDogCategories,
+    getDogOrigins,
+    getDogSize
 }
 
 module.exports = func;
