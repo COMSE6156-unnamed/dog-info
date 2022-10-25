@@ -11,7 +11,7 @@ $ npm start
 
 ## Get information of all dogs
 - Path: `/dogs`
-- Return value: A list of JSON objects.
+- Return value: A list of JSON objects. Ex. `http://localhost:3000/dogs`
 ```
 [
     {
