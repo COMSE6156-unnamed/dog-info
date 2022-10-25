@@ -6,4 +6,7 @@ router.get("/:id", dogController.getDog);
 router.get("/:id/categories", dogController.getDogCategories);
 router.get("/:id/origins", dogController.getDogOrigins);
 router.get("/:id/size", dogController.getDogSize);
+router.get("/:id/image_url", dogController.getDogImageUrl);
+router.get("/:id/pronunciation_url", dogController.getDogPronunciationUrl);
+
 module.exports = router

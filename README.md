@@ -100,3 +100,22 @@ $ npm start
     "name": "Small"
 }
 ```
+
+## Get a dog's image url
+- Path `/dogs/:id/image_url`
+- Return value: An image_url object. Ex. `http://localhost:3000/dogs/1/image_url`
+```
+{
+    "image_url": "https://coms6156-dog-data.s3.amazonaws.com/images/dachshund.jpg"
+}
+```
+
+## Get a dog's pronunciation url
+- Path `/dogs/:id/pronunciation_url`
+- Return value: A pronunciation_url object. Ex. `http://localhost:3000/dogs/1/pronunciation_url`
+```
+{
+    "pronunciation_url": "https://coms6156-dog-data.s3.amazonaws.com/pronunciation/dachshund_en_us_1.mp3"
+}
+```
+- Note: The pronunciation url is not available for all the dogs. If the url is not available, the url will be an empty string.

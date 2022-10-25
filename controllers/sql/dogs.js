@@ -53,6 +53,18 @@ WHERE dogs.id = dogHasSizes.did AND
     sizes.id = dogHasSizes.sid;
 `
 
+const getDogImageUrl = `
+SELECT dogs.image_url 
+FROM dogs
+WHERE dogs.id = :id;
+`
+
+const getDogPronunciationUrl = `
+SELECT dogs.pronunciation_url
+FROM dogs
+WHERE dogs.id = :id;
+`
+
 const sql = {
     getDog,
     getDogs,
@@ -61,7 +73,9 @@ const sql = {
     getDogOrigins,
     getDogsOrigins,
     getDogSize,
-    getDogsSizes
+    getDogsSizes,
+    getDogImageUrl,
+    getDogPronunciationUrl
 };
 
 module.exports = sql;

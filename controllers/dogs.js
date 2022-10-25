@@ -138,12 +138,51 @@ const getDogSize = async (req, res) => {
     }
 }
 
+const getDogImageUrl = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const image_urls = await sequelize.query(sql.getDogImageUrl, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        });
+        if (image_urls.length < 1) {
+            throw new Error("DOG_NOT_EXIST");
+        }
+        const image_url = image_urls.at(0);
+        return res.status(200).json(image_url);
+    } catch (error) {
+        console.log(error);
+        return errorCheck.errorHandler(error, res);
+    }
+}
+
+const getDogPronunciationUrl = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const pronunciation_urls = await sequelize.query(sql.getDogPronunciationUrl, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        });
+        if (pronunciation_urls.length < 1) {
+            throw new Error("DOG_NOT_EXIST");
+        }
+
+        const pronunciation_url = pronunciation_urls.at(0);
+        return res.status(200).json(pronunciation_url);
+    } catch (error) {
+        console.log(error);
+        return errorCheck.errorHandler(error, res);
+    }
+}
+
 const func = {
     getAllDogsInfo,
     getDog,
     getDogCategories,
     getDogOrigins,
-    getDogSize
+    getDogSize,
+    getDogImageUrl,
+    getDogPronunciationUrl
 }
 
 module.exports = func;
