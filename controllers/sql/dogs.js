@@ -1,15 +1,12 @@
 const getDog = `
-SELECT dogs.id, dogs.name, sizes.name AS size, dogs.image_url, dogs.pronunciation_url
-FROM dogs, sizes, dogHasSizes
-WHERE dogs.id = :id AND
-    dogs.id = dogHasSizes.did AND sizes.id = dogHasSizes.sid;
+SELECT dogs.id, dogs.name, dogs.image_url, dogs.pronunciation_url
+FROM dogs
+WHERE dogs.id = :id;
 `
 
 const getDogs = `
-SELECT dogs.id, dogs.name, sizes.name AS size, dogs.image_url, dogs.pronunciation_url
-FROM dogs, sizes, dogHasSizes
-WHERE dogs.id = dogHasSizes.did
-    AND sizes.id = dogHasSizes.sid;
+SELECT dogs.id, dogs.name, dogs.image_url, dogs.pronunciation_url
+FROM dogs;
 `
 
 const getDogCategories = `
@@ -49,6 +46,13 @@ WHERE dogs.id = :id AND
     dogs.id = dogHasSizes.did AND sizes.id = dogHasSizes.sid;
 `
 
+const getDogsSizes = `
+SELECT dogs.id AS did, sizes.id AS sid, sizes.name AS sname
+FROM dogs, sizes, dogHasSizes
+WHERE dogs.id = dogHasSizes.did AND
+    sizes.id = dogHasSizes.sid;
+`
+
 const sql = {
     getDog,
     getDogs,
@@ -57,6 +61,7 @@ const sql = {
     getDogOrigins,
     getDogsOrigins,
     getDogSize,
+    getDogsSizes
 };
 
 module.exports = sql;

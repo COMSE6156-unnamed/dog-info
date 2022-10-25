@@ -1,8 +1,8 @@
-const dogFormat = (dog, categories, origins) => {
+const dogFormat = (dog, categories, origins, size) => {
     return {
         id: dog.id,
         name: dog.name,
-        size: dog.size,
+        size: size,
         categories: categories ? categories : [],
         origins: origins ? origins : [],
         image_url: dog.image_url,
@@ -10,11 +10,12 @@ const dogFormat = (dog, categories, origins) => {
     };
 };
 
-const dogsFormat = (dogs, categoryMap, originMap) => {
+const dogsFormat = (dogs, categoryMap, originMap, sizeMap) => {
     return dogs.map((dog) => {
         return dogFormat(dog,
             categoryMap.has(dog.id) ? categoryMap.get(dog.id) : [],
-            originMap.has(dog.id) ? originMap.get(dog.id) : []);
+            originMap.has(dog.id) ? originMap.get(dog.id) : [],
+            sizeMap.has(dog.id) ? sizeMap.get(dog.id) : "NaN");
     });
 };
 

@@ -12,7 +12,9 @@ const getAllDogsInfo = async (req, res) => {
             { type: Sequelize.QueryTypes.SELECT });
         const origins = await sequelize.query(sql.getDogsOrigins,
             { type: Sequelize.QueryTypes.SELECT });
-        
+        const sizes = await sequelize.query(sql.getDogsSizes,
+            { type: Sequelize.QueryTypes.SELECT });
+
         const categoryMap = new Map();
         if (!dogs || !categories || !origins) {
             throw new Error("LOAD_DOGS_ERROR");
@@ -32,7 +34,12 @@ const getAllDogsInfo = async (req, res) => {
             originMap.get(origin.did).push({id: origin.oid, name: origin.oname});
         });
 
-        dogs = format.dogsFormat(dogs, categoryMap, originMap);
+        const sizeMap = new Map();
+        sizes.forEach((size) => {
+            sizeMap.set(size.did, {id: size.sid, name: size.sname});
+        })
+
+        dogs = format.dogsFormat(dogs, categoryMap, originMap, sizeMap);
         return res.status(200).json(dogs);
     } catch (error) {
         console.log(error);
@@ -64,8 +71,13 @@ const getDog = async (req, res) => {
             replacements: { id: id },
             type: Sequelize.QueryTypes.SELECT
         });
-        
-        dog = format.dogFormat(dog, categories, origins);
+
+        const sizes = await sequelize.query(sql.getDogSize, {
+            replacements: { id: id },
+            type: Sequelize.QueryTypes.SELECT
+        })
+        const size = sizes.at(0);
+        dog = format.dogFormat(dog, categories, origins, size);
         return res.status(200).json(dog);
     } catch (error) {
         console.log(error);
