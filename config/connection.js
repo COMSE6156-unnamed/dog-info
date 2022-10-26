@@ -9,7 +9,7 @@ module.exports = function (app) {
       const httpServer = server.listen(
         { port: process.env.PORT || 3000},
         () => {
-          `Server read at http://localhost:${process.env.PORT || 3000}`
+          console.log(`Server read at http://localhost:${process.env.PORT || 3000}`);
         }
       )
     })
