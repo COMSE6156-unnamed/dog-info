@@ -2,6 +2,7 @@ const initRouter = require("../routes/init");
 const dogRouter = require("../routes/dogs");
 const categoryRouter = require("../routes/categories");
 const originRouter = require("../routes/origins");
+const updateRouter = require("../routes/update")
 const createError = require("http-errors");
 
 module.exports = function (app) {
@@ -9,6 +10,7 @@ module.exports = function (app) {
   app.use("/dogs", dogRouter);
   app.use("/categories", categoryRouter);
   app.use("/origins", originRouter);
+  app.use("/update", updateRouter);
   app.use("/", initRouter);
 
   // catch 404 and forward to error handler
