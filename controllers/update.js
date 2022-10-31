@@ -115,7 +115,7 @@ const create = async (req, res) => {
   } catch (error) {
     console.log(error);
     if (did) {
-        await Dogs.destroy({where: {id}});
+        await Dogs.destroy({where: {did}});
     }
     return errorCheck.errorHandler(error, res);
   }
