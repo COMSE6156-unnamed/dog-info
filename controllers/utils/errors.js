@@ -18,7 +18,7 @@ const errorHandler = (err, res) => {
                 error: { message: errors.get(err.message) }
             });
     } else {
-        return res.status(500).json({ error: { message: "server error" } });
+        return res.status(500).json({ error: { message: err.message } });
     }
 };
 

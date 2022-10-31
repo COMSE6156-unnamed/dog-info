@@ -113,9 +113,9 @@ const create = async (req, res) => {
     
     dog = dog ? await getDogdata(dog.id) : { message: "create failed" };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (did) {
-        await Dogs.destroy({where: {did}});
+        await Dogs.destroy({where: {id: did}});
     }
     return errorCheck.errorHandler(error, res);
   }
@@ -141,7 +141,6 @@ const create_dog_metadata = async (data, type) => {
     res = await DogFromOrigins.bulkCreate(data);
   }
 
-  console.log(res);
   if (!res) {
     throw new Error(`${type} creation failed`);
   }
