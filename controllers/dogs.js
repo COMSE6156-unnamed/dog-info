@@ -50,40 +50,45 @@ const getAllDogsInfo = async (req, res) => {
 const getDog = async (req, res) => {
     try {
         const id = req.params.id;
-        const dogs = await sequelize.query(sql.getDog, {
-            replacements: {
-                id: id
-            },
-            type: Sequelize.QueryTypes.SELECT
-        });
-        
-        if (dogs.length < 1) {
-            throw new Error("DOG_NOT_EXIST");
-        }
-        
-        let dog = dogs.at(0);
-        const categories = await sequelize.query(sql.getDogCategories, {
-            replacements: { id: id },
-            type: Sequelize.QueryTypes.SELECT
-        });
-        
-        const origins = await sequelize.query(sql.getDogOrigins, {
-            replacements: { id: id },
-            type: Sequelize.QueryTypes.SELECT
-        });
-
-        const sizes = await sequelize.query(sql.getDogSize, {
-            replacements: { id: id },
-            type: Sequelize.QueryTypes.SELECT
-        })
-        const size = sizes.at(0);
-        dog = format.dogFormat(dog, categories, origins, size);
+        const dog = await getDogdata(id)
         return res.status(200).json(dog);
     } catch (error) {
         console.log(error);
         return errorCheck.errorHandler(error, res);    
     }
 };
+
+const getDogdata = async(id) => {
+    const dogs = await sequelize.query(sql.getDog, {
+        replacements: {
+            id: id
+        },
+        type: Sequelize.QueryTypes.SELECT
+    });
+    
+    if (dogs.length < 1) {
+        throw new Error("DOG_NOT_EXIST");
+    }
+    
+    let dog = dogs.at(0);
+    const categories = await sequelize.query(sql.getDogCategories, {
+        replacements: { id: id },
+        type: Sequelize.QueryTypes.SELECT
+    });
+    
+    const origins = await sequelize.query(sql.getDogOrigins, {
+        replacements: { id: id },
+        type: Sequelize.QueryTypes.SELECT
+    });
+
+    const sizes = await sequelize.query(sql.getDogSize, {
+        replacements: { id: id },
+        type: Sequelize.QueryTypes.SELECT
+    })
+    const size = sizes.at(0);
+    dog = format.dogFormat(dog, categories, origins, size);
+    return dog
+}
 
 const getDogCategories = async(req, res) => {
     try {
@@ -182,7 +187,8 @@ const func = {
     getDogOrigins,
     getDogSize,
     getDogImageUrl,
-    getDogPronunciationUrl
+    getDogPronunciationUrl,
+    getDogdata
 }
 
 module.exports = func;
