@@ -63,9 +63,6 @@ const update = async (req, res) => {
     dog = dog ? await getDogdata(dog.id) : { message: "create/update failed" };
   } catch (error) {
     console.log(error);
-    if (did) {
-        await Dogs.destroy({where: {id}});
-    }
     return errorCheck.errorHandler(error, res);
   }
 
