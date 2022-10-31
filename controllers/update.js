@@ -24,6 +24,10 @@ const update = async (req, res) => {
     // if id exists, we update the existing ones
     // else create new ones
 
+    if (!id){
+      throw new Error("ID_NOT_DEFINITED");
+    }
+
     dog = await Dogs.findOne({where:{id}});
     if (!dog) {
       throw new Error("DOG_NOT_FOUND");
