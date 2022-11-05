@@ -1,9 +1,10 @@
 {
     "env": {
         "DATABASE": "dog_data",
-        "DATABASE_USER": "admin",
-        "DATABASE_PASSWORD": "dbuserdbuser",
+        "DATABASE_USER": "dbuser",
+        "DATABASE_PASSWORD": "dbuserdbsuer",
         "DATABASE_PORT": "3306",
-        "DATABASE_HOST": "e6156.clg4hkuxiisg.us-east-2.rds.amazonaws.com"
+        // "DATABASE_HOST": "e6156.clg4hkuxiisg.us-east-2.rds.amazonaws.com"
+        "DATABASE_HOST": "localhost"
     }
 }

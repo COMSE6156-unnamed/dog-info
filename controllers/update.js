@@ -5,6 +5,7 @@ const {
   DogBelongsToCategories,
   DogFromOrigins,
   DogHasSize,
+  Origins
 } = require("../models/models");
 
 const update = async (req, res) => {
@@ -148,9 +149,84 @@ const create_dog_metadata = async (data, type) => {
   return res;
 };
 
+const create_origin = async (req, res) => {
+  let {
+    name,
+  } = req.body;
+
+  let origin = null;
+  let oid = null;
+  try {
+    all_origins = await Origins.findAll({attributes: ["name"]});
+    all_origins = all_origins.map(({ dataValues }) => dataValues["name"])
+    if (all_origins.includes(name)) {
+      throw new Error("ORIGIN_ALREADY_EXISTS");
+    }
+
+    origin = { name };
+    origin = await Origins.create(origin);
+    if (!origin) {
+      throw new Error("CREATE_ORIGIN_FAILED");
+    }
+    oid = origin.id;
+  } catch (error) {
+    if (oid) {
+      await Origins.destroy({where: {id: oid}});
+    }
+    return errorCheck.errorHandler(error, res);
+  }
+  
+  return res.status(200).json(origin);
+}
+
+const update_origin = async (req, res) => {
+  let {
+    name,
+    id,
+  } = req.body;
+
+  let origin = null;
+  let oid = null;
+  try {
+    // if id exists, we update the existing ones
+    // else create new ones
+
+    if (!id){
+      throw new Error("ID_NOT_DEFINITED");
+    }
+
+    origin = await Origins.findOne({where:{id}});
+    if (!origin) {
+      throw new Error("ORIGIN_NOT_FOUND");
+    }
+    origin = await origin.update({
+      name,
+    });
+
+    if (!origin) {
+      throw new Error("ORIGIN_UPDATE_FAILED");
+    }
+  } catch (error) {
+    console.log(error);
+    return errorCheck.errorHandler(error, res);
+  }
+
+  return res.status(200).json(origin);
+}
+
+const create_category = async (req, res) => {
+  
+}
+
+const update_category = async (req, res) => {
+  
+}
+
 const func = {
   update,
-  create
+  create,
+  create_origin,
+  update_origin,
 };
 
 module.exports = func;
