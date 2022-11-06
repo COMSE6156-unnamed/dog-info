@@ -5,10 +5,11 @@ const {
   DogBelongsToCategories,
   DogFromOrigins,
   DogHasSize,
-  Origins
+  Origins,
+  Categories,
 } = require("../models/models");
 
-const update = async (req, res) => {
+const update_dog = async (req, res) => {
   let {
     name,
     id,
@@ -20,7 +21,7 @@ const update = async (req, res) => {
   } = req.body;
 
   let dog = null;
-  let did = null;
+  
   try {
     // if id exists, we update the existing ones
     // else create new ones
@@ -70,7 +71,7 @@ const update = async (req, res) => {
   return res.status(200).json(dog);
 };
 
-const create = async (req, res) => {
+const create_dog = async (req, res) => {
   let {
     name,
     size_ids,
@@ -186,10 +187,9 @@ const update_origin = async (req, res) => {
   } = req.body;
 
   let origin = null;
-  let oid = null;
+  
   try {
     // if id exists, we update the existing ones
-    // else create new ones
 
     if (!id){
       throw new Error("ID_NOT_DEFINITED");
@@ -215,18 +215,76 @@ const update_origin = async (req, res) => {
 }
 
 const create_category = async (req, res) => {
+  let {
+    name,
+  } = req.body;
+
+  let category = null;
+  let cid = null;
+  try {
+    all_categories = await Categories.findAll({attributes: ["name"]});
+    all_categories = all_categories.map(({ dataValues }) => dataValues["name"])
+    if (all_categories.includes(name)) {
+      throw new Error("CATEGORY_ALREADY_EXISTS");
+    }
+
+    category = { name };
+    category = await Categories.create(category);
+    if (!category) {
+      throw new Error("CREATE_CATEGORY_FAILED");
+    }
+    cid = category.id;
+  } catch (error) {
+    if (cid) {
+      await Categories.destroy({where: {id: cid}});
+    }
+    return errorCheck.errorHandler(error, res);
+  }
   
+  return res.status(200).json(category);
 }
 
 const update_category = async (req, res) => {
+  let {
+    name,
+    id,
+  } = req.body;
+
+  let category = null;
   
+  try {
+    // if id exists, we update the existing ones
+
+    if (!id){
+      throw new Error("ID_NOT_DEFINITED");
+    }
+
+    category = await Categories.findOne({where:{id}});
+    if (!category) {
+      throw new Error("CATEGORY_NOT_FOUND");
+    }
+    category = await category.update({
+      name,
+    });
+
+    if (!category) {
+      throw new Error("CATEGORY_UPDATE_FAILED");
+    }
+  } catch (error) {
+    console.log(error);
+    return errorCheck.errorHandler(error, res);
+  }
+
+  return res.status(200).json(category);
 }
 
 const func = {
-  update,
-  create,
+  update_dog,
+  create_dog,
   create_origin,
   update_origin,
+  create_category,
+  update_category,
 };
 
 module.exports = func;
