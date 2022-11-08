@@ -246,9 +246,12 @@ const update_metadata = async (type, res, name, id) => {
   
   try {
     // if id exists, we update the existing ones
+    if (!name) {
+      throw new Error("NAME_NOT_DEFINED")
+    }
 
     if (!id){
-      throw new Error("ID_NOT_DEFINITED");
+      throw new Error("ID_NOT_DEFINED");
     }
 
     metadata = await metadata_object.findOne({where:{id}});
