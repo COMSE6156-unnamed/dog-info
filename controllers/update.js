@@ -7,6 +7,7 @@ const {
   DogHasSize,
   Origins,
   Categories,
+  Sizes,
 } = require("../models/models");
 
 const update_dog = async (req, res) => {
@@ -151,33 +152,8 @@ const create_dog_metadata = async (data, type) => {
 };
 
 const create_origin = async (req, res) => {
-  let {
-    name,
-  } = req.body;
-
-  let origin = null;
-  let oid = null;
-  try {
-    all_origins = await Origins.findAll({attributes: ["name"]});
-    all_origins = all_origins.map(({ dataValues }) => dataValues["name"])
-    if (all_origins.includes(name)) {
-      throw new Error("ORIGIN_ALREADY_EXISTS");
-    }
-
-    origin = { name };
-    origin = await Origins.create(origin);
-    if (!origin) {
-      throw new Error("CREATE_ORIGIN_FAILED");
-    }
-    oid = origin.id;
-  } catch (error) {
-    if (oid) {
-      await Origins.destroy({where: {id: oid}});
-    }
-    return errorCheck.errorHandler(error, res);
-  }
-  
-  return res.status(200).json(origin);
+  let { name } = req.body;
+  return create_metadata("origin", res, name);
 }
 
 const update_origin = async (req, res) => {
@@ -185,63 +161,12 @@ const update_origin = async (req, res) => {
     name,
     id,
   } = req.body;
-
-  let origin = null;
-  
-  try {
-    // if id exists, we update the existing ones
-
-    if (!id){
-      throw new Error("ID_NOT_DEFINITED");
-    }
-
-    origin = await Origins.findOne({where:{id}});
-    if (!origin) {
-      throw new Error("ORIGIN_NOT_FOUND");
-    }
-    origin = await origin.update({
-      name,
-    });
-
-    if (!origin) {
-      throw new Error("ORIGIN_UPDATE_FAILED");
-    }
-  } catch (error) {
-    console.log(error);
-    return errorCheck.errorHandler(error, res);
-  }
-
-  return res.status(200).json(origin);
+  return update_metadata("origin", res, name, id)
 }
 
 const create_category = async (req, res) => {
-  let {
-    name,
-  } = req.body;
-
-  let category = null;
-  let cid = null;
-  try {
-    all_categories = await Categories.findAll({attributes: ["name"]});
-    all_categories = all_categories.map(({ dataValues }) => dataValues["name"])
-    if (all_categories.includes(name)) {
-      throw new Error("CATEGORY_ALREADY_EXISTS");
-    }
-
-    category = { name };
-    category = await Categories.create(category);
-    if (!category) {
-      throw new Error("CREATE_CATEGORY_FAILED");
-    }
-    cid = category.id;
-  } catch (error) {
-    if (cid) {
-      await Categories.destroy({where: {id: cid}});
-    }
-    return errorCheck.errorHandler(error, res);
-  }
-  
-  return res.status(200).json(category);
+  let { name } = req.body;
+  return create_metadata("category", res, name);
 }
 
 const update_category = async (req, res) => {
@@ -249,8 +174,75 @@ const update_category = async (req, res) => {
     name,
     id,
   } = req.body;
+  return update_metadata("category", res, name, id)
+}
 
-  let category = null;
+const create_size = async (req, res) => {
+  let { name } = req.body;
+  return create_metadata("size", res, name);
+}
+
+const update_size = async (req, res) => {
+  let {
+    name,
+    id,
+  } = req.body;
+  return update_metadata("size", res, name, id)
+}
+
+const create_metadata = async (type, res, name) => {
+
+  let metadata = null;
+  let metadata_id = null;
+  let metadata_object = null;
+  let metadata_string = null;
+  if (type == "size") {
+    metadata_object = Sizes;
+    metadata_string = "SIZE";
+  } else if (type == "category") {
+    metadata_object = Categories;
+    metadata_string = "CATEGORY";
+  } else if (type == "origin") {
+    metadata_object = Origins;
+    metadata_string = "ORIGIN"
+  }
+    
+  try {
+    all_metadata = await metadata_object.findAll({attributes: ["name"]});
+    all_metadata = all_metadata.map(({ dataValues }) => dataValues["name"])
+    if (all_metadata.includes(name)) {
+      throw new Error(metadata_string + "_ALREADY_EXISTS");
+    }
+
+    metadata = { name };
+    metadata = await metadata_object.create(metadata);
+    if (!metadata) {
+      throw new Error("CREATE_" + metadata_string + "_FAILED");
+    }
+    metadata_id = metadata.id;
+  } catch (error) {
+    if (metadata_id) {
+      await metadata_object.destroy({where: {id: metadata_id}});
+    }
+    return errorCheck.errorHandler(error, res);
+  }
+  
+  return res.status(200).json(metadata);
+}
+
+const update_metadata = async (type, res, name, id) => {
+  let metadata = null;
+  let metadata_string = null;
+  if (type == "size") {
+    metadata_object = Sizes;
+    metadata_string = "SIZE";
+  } else if (type == "category") {
+    metadata_object = Categories;
+    metadata_string = "CATEGORY";
+  } else if (type == "origin") {
+    metadata_object = Origins;
+    metadata_string = "ORIGIN"
+  }
   
   try {
     // if id exists, we update the existing ones
@@ -259,23 +251,23 @@ const update_category = async (req, res) => {
       throw new Error("ID_NOT_DEFINITED");
     }
 
-    category = await Categories.findOne({where:{id}});
-    if (!category) {
-      throw new Error("CATEGORY_NOT_FOUND");
+    metadata = await metadata_object.findOne({where:{id}});
+    if (!metadata) {
+      throw new Error(metadata_string + "_NOT_FOUND");
     }
-    category = await category.update({
+    metadata = await metadata.update({
       name,
     });
 
-    if (!category) {
-      throw new Error("CATEGORY_UPDATE_FAILED");
+    if (!metadata) {
+      throw new Error(metadata_string + "_UPDATE_FAILED");
     }
   } catch (error) {
     console.log(error);
     return errorCheck.errorHandler(error, res);
   }
 
-  return res.status(200).json(category);
+  return res.status(200).json(metadata);
 }
 
 const func = {
@@ -285,6 +277,8 @@ const func = {
   update_origin,
   create_category,
   update_category,
+  create_size,
+  update_size,
 };
 
 module.exports = func;

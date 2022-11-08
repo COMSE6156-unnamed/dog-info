@@ -45,13 +45,28 @@ const originsFormat = (origins) => {
     })
 }
 
+const sizeFormat = (size) => {
+    return {
+        id: size.id,
+        name: size.name
+    }
+};
+
+const sizesFormat = (sizes) => {
+    return sizes.map((size) => {
+        return sizeFormat(size);
+    })
+}
+
 const func = {
     dogFormat,
     dogsFormat,
     categoryFormat,
     categoriesFormat,
     originFormat,
-    originsFormat
+    originsFormat,
+    sizeFormat,
+    sizesFormat,
 }
 
 module.exports = func;
