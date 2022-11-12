@@ -12,7 +12,6 @@ const paginationRelationNext = "next";
 const constants = {
     defaultPageSize,
     defaultOffset,
-    paginationRelationFirst,
     paginationRelationCurrent,
     paginationRelationPrev,
     paginationRelationNext,
