@@ -273,6 +273,62 @@ const update_metadata = async (type, res, name, id) => {
   return res.status(200).json(metadata);
 }
 
+const delete_dog = async (req, res) => {
+  return await delete_data('dog', req.body.id, res);
+}
+
+const delete_size = async (req, res) => {
+  return await delete_data('size', req.body.id, res);
+}
+
+const delete_origin = async (req, res) => {
+  return await delete_data('origin', req.body.id, res);
+}
+
+const delete_category = async (req, res) => {
+  return await delete_data('category', req.body.id, res);
+}
+
+const delete_data = async(type, id, res) => {
+
+  let metadata = null;
+  let metadata_string = null;
+  if (type == "size") {
+    metadata_object = Sizes;
+    metadata_string = "SIZE";
+  } else if (type == "category") {
+    metadata_object = Categories;
+    metadata_string = "CATEGORY";
+  } else if (type == "origin") {
+    metadata_object = Origins;
+    metadata_string = "ORIGIN"
+  } else if (type == 'dog') {
+    metadata_object = Dogs;
+    metadata_string = "DOG"
+  }
+
+  try {
+    if (!type) {
+      throw new Error("TYPE_NOT_DEFINED")
+    }
+
+    if (!id){
+      throw new Error("ID_NOT_DEFINED");
+    }
+    metadata = await metadata_object.findOne({where:{id}});
+    if (!metadata) {
+      throw new Error(metadata_string + "_NOT_FOUND");
+    }
+    metadata.destroy();
+
+  } catch (error) {
+    console.log(error);
+    return errorCheck.errorHandler(error, res);
+  }
+
+  return res.status(200).json({message: "success"});
+}
+
 const func = {
   update_dog,
   create_dog,
@@ -282,6 +338,10 @@ const func = {
   update_category,
   create_size,
   update_size,
+  delete_dog,
+  delete_size,
+  delete_category,
+  delete_origin
 };
 
 module.exports = func;

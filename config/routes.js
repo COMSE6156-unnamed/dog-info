@@ -6,6 +6,7 @@ const sizeRouter = require("../routes/sizes");
 const updateRouter = require("../routes/update");
 const createRouter = require("../routes/create");
 const createError = require("http-errors");
+const deleteRouter = require("../routes/delete")
 
 module.exports = function (app) {
     
@@ -15,6 +16,7 @@ module.exports = function (app) {
   app.use("/sizes", sizeRouter);
   app.use("/update", updateRouter);
   app.use("/create", createRouter);
+  app.use("/delete", deleteRouter)
   app.use("/", initRouter);
 
   // catch 404 and forward to error handler
