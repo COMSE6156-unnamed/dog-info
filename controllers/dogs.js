@@ -235,7 +235,7 @@ function getPaginationLinks(limit, offset, dogNum) {
     nextPath
   );
 
-  return { curr, prev, next };
+  return [ curr, prev, next ];
 }
 
 function getPaginationLinkObject(relation, path) {
