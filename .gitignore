@@ -103,9 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-# Database Credentials
-nodemon.json
-
 node_modules/
-.gitignore
 .elasticbeanstalk/
