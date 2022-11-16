@@ -1,5 +1,5 @@
 // Constants for routes
-const serverEndpoint = `http://localhost:${process.env.PORT || 3000}`
+const serverEndpoint = `${process.env.API_HOST}`
 const dogsRoute = `/dogs`;
 
 // Constants for dogs controller
