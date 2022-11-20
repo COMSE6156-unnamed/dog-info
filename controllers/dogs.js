@@ -5,7 +5,7 @@ const format = require("./utils/format");
 const errorCheck = require("./utils/errors");
 const constants = require("../util/constants");
 
-const getAllDogsInfo = async (req, res) => {
+const getDogsInfo = async (req, res) => {
   try {
     const limit = req.query.limit
       ? Math.min(constants.defaultPageSize, parseInt(req.query.limit))
@@ -242,8 +242,51 @@ function getPaginationLinkObject(relation, path) {
   return { rel: relation, href: path };
 }
 
+const getAllDogsInfo = async (req, res) => {
+  try {
+      let dogs = await sequelize.query(sql.getDogs,
+          { type: Sequelize.QueryTypes.SELECT });
+      const categories = await sequelize.query(sql.getDogsCategories,
+          { type: Sequelize.QueryTypes.SELECT });
+      const origins = await sequelize.query(sql.getDogsOrigins,
+          { type: Sequelize.QueryTypes.SELECT });
+      const sizes = await sequelize.query(sql.getDogsSizes,
+          { type: Sequelize.QueryTypes.SELECT });
+
+      const categoryMap = new Map();
+      if (!dogs || !categories || !origins) {
+          throw new Error("LOAD_DOGS_ERROR");
+      }
+      categories.forEach((category) => {
+          if (!categoryMap.has(category.did)) {
+              categoryMap.set(category.did, []);
+          }
+          categoryMap.get(category.did).push({id: category.cid, name: category.cname});
+      });
+
+      const originMap = new Map();
+      origins.forEach((origin) => {
+          if (!originMap.has(origin.did)) {
+              originMap.set(origin.did, []);
+          }
+          originMap.get(origin.did).push({id: origin.oid, name: origin.oname});
+      });
+
+      const sizeMap = new Map();
+      sizes.forEach((size) => {
+          sizeMap.set(size.did, {id: size.sid, name: size.sname});
+      })
+
+      dogs = format.dogsFormat(dogs, categoryMap, originMap, sizeMap);
+      return res.status(200).json(dogs);
+  } catch (error) {
+      console.log(error);
+      return errorCheck.errorHandler(error, res);    
+  }
+};
+
 const func = {
-  getAllDogsInfo,
+  getDogsInfo,
   getDog,
   getDogCategories,
   getDogOrigins,
@@ -251,6 +294,7 @@ const func = {
   getDogImageUrl,
   getDogPronunciationUrl,
   getDogdata,
+  getAllDogsInfo
 };
 
 module.exports = func;
