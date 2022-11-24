@@ -13,13 +13,13 @@ const {
 const update_dog = async (req, res) => {
   let {
     name,
-    id,
     size_ids,
     origin_ids,
     category_ids,
     image_url,
     pronunciation_url,
   } = req.body;
+  let id = req.params.id
 
   let dog = null;
   
@@ -157,10 +157,8 @@ const create_origin = async (req, res) => {
 }
 
 const update_origin = async (req, res) => {
-  let {
-    name,
-    id,
-  } = req.body;
+  let { name } = req.body;
+  let id = req.params.id
   return update_metadata("origin", res, name, id)
 }
 
@@ -170,10 +168,8 @@ const create_category = async (req, res) => {
 }
 
 const update_category = async (req, res) => {
-  let {
-    name,
-    id,
-  } = req.body;
+  let { name } = req.body;
+  let id = req.params.id
   return update_metadata("category", res, name, id)
 }
 
@@ -183,10 +179,8 @@ const create_size = async (req, res) => {
 }
 
 const update_size = async (req, res) => {
-  let {
-    name,
-    id,
-  } = req.body;
+  let { name } = req.body;
+  let id = req.params.id
   return update_metadata("size", res, name, id)
 }
 
@@ -274,19 +268,19 @@ const update_metadata = async (type, res, name, id) => {
 }
 
 const delete_dog = async (req, res) => {
-  return await delete_data('dog', req.body.id, res);
+  return await delete_data('dog', req.params.id, res);
 }
 
 const delete_size = async (req, res) => {
-  return await delete_data('size', req.body.id, res);
+  return await delete_data('size', req.params.id, res);
 }
 
 const delete_origin = async (req, res) => {
-  return await delete_data('origin', req.body.id, res);
+  return await delete_data('origin', req.params.id, res);
 }
 
 const delete_category = async (req, res) => {
-  return await delete_data('category', req.body.id, res);
+  return await delete_data('category', req.params.id, res);
 }
 
 const delete_data = async(type, id, res) => {
