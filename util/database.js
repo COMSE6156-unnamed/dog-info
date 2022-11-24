@@ -1,17 +1,16 @@
 const Sequelize = require('sequelize').Sequelize;
 
 const sequelize = new Sequelize(
-    "dog_data",
-    "dbuser",
-    "dbuserdbuser",
+    process.env.DATABASE,
+    process.env.DATABASE_USER,
+    process.env.DATABASE_PASSWORD,
     {
         dialect: "mysql",
-        host: "localhost",
-        port: "3306",
+        host: process.env.DATABASE_HOST,
+        port: process.env.DATABASE_PORT,
         logging: console.log,
         dialectOptions: {
-            require: true,
-            rejectUnauthorized: false
+            ssl: 'Amazon RDS'
         },
 
         define: {
