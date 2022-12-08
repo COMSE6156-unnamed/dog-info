@@ -1,5 +1,7 @@
 const errorCheck = require("./utils/errors");
 const { getDogdata } = require("./dogs");
+const { emitEvent } = require("./utils/sns");
+
 const {
   Dogs,
   DogBelongsToCategories,
@@ -122,7 +124,7 @@ const create_dog = async (req, res) => {
     }
     return errorCheck.errorHandler(error, res);
   }
-
+  emitEvent(dog);
   return res.status(200).json(dog);
 };
 
